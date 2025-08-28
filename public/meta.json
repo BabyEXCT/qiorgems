@@ -1,0 +1,16 @@
+{
+  "name": "QioGems",
+  "short_name": "QioGems",
+  "description": "QioGems - Premium Jewelry E-commerce Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/next.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

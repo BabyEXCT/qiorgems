@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  username      String     @unique
+  password      String
+  role          UserRole   @default(CUSTOMER)
+  firstName     String?
+  lastName      String?
+  phone         String?
+  address       String?
+  city          String?
+  country       String?
+  zipCode       String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  cart          CartItem[]
+  categories    Category[]
+  materials     Material[]
+  orders        Order[]
+  products      Product[]
+  sessions      Session[]
+  vouchers      Voucher[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  sellerId    String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  seller      User      @relation(fields: [sellerId], references: [id])
+  products    Product[]
+}
+
+model Material {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  sellerId    String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  seller      User      @relation(fields: [sellerId], references: [id])
+  products    Product[]
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  images      String
+  categoryId  String?
+  materialId  String?
+  material    String?
+  dimensions  String?
+  gemstones   String?
+  stock       Int           @default(0)
+  status      ProductStatus @default(ACTIVE)
+  featured    Boolean       @default(false)
+  sellerId    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  seller      User          @relation(fields: [sellerId], references: [id])
+  materialRef Material?     @relation(fields: [materialId], references: [id])
+  category    Category?     @relation(fields: [categoryId], references: [id])
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  userId          String
+  status          OrderStatus   @default(PENDING)
+  total           Float
+  shippingCost    Float         @default(0)
+  tax             Float         @default(0)
+  subtotal        Float
+  shippingAddress String
+  billingAddress  String?
+  paymentMethod   String
+  paymentStatus   PaymentStatus @default(PENDING)
+  trackingNumber  String?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  user            User          @relation(fields: [userId], references: [id])
+  orderItems      OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  product   Product @relation(fields: [productId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, productId])
+}
+
+model ShippingOption {
+  id            String  @id @default(cuid())
+  name          String
+  description   String?
+  price         Float
+  estimatedDays Int
+  active        Boolean @default(true)
+}
+
+model Voucher {
+  id             String        @id @default(cuid())
+  code           String        @unique
+  name           String
+  description    String?
+  type           VoucherType
+  value          Float
+  minOrderAmount Float         @default(0)
+  maxDiscount    Float?
+  usageLimit     Int
+  usedCount      Int           @default(0)
+  status         VoucherStatus @default(ACTIVE)
+  startDate      DateTime
+  endDate        DateTime
+  sellerId       String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  seller         User          @relation(fields: [sellerId], references: [id])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  CUSTOMER
+  SELLER
+  ADMIN
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+  DISCONTINUED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum VoucherType {
+  PERCENTAGE
+  FIXED
+}
+
+enum VoucherStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+}
