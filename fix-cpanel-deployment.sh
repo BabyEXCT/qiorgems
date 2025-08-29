@@ -26,31 +26,41 @@ else
     echo "⚠ Warning: package-cpanel.json not found, using original package.json"
 fi
 
-# Step 4: Install dependencies with specific flags for cPanel
+# Step 4: Install dependencies with cPanel-optimized package.json (no postinstall)
 echo "Step 4: Installing dependencies..."
-npm install --no-package-lock --legacy-peer-deps --no-optional
-
-if [ $? -ne 0 ]; then
-    echo "❌ npm install failed. Trying alternative approach..."
-    
-    # Alternative: Install core dependencies first
-    echo "Installing core dependencies individually..."
-    npm install --no-package-lock next@15.4.6
-    npm install --no-package-lock react@19.1.0 react-dom@19.1.0
-    npm install --no-package-lock @prisma/client
-    npm install --no-package-lock prisma
-    npm install --no-package-lock next-auth
-    
-    # Then install remaining dependencies
+if [ -f "package-cpanel-no-postinstall.json" ]; then
+    echo "Using cPanel-optimized package.json without postinstall script..."
+    cp package-cpanel-no-postinstall.json package.json
+    npm install --no-package-lock --legacy-peer-deps
+elif [ -f "package-cpanel.json" ]; then
+    echo "Using cPanel-optimized package.json..."
+    cp package-cpanel.json package.json
+    npm install --no-package-lock --legacy-peer-deps
+else
+    echo "Using default package.json..."
     npm install --no-package-lock --legacy-peer-deps
 fi
 
-# Step 5: Generate Prisma client with error handling
-echo "Step 5: Generating Prisma client..."
+# Step 5: Ensure Prisma CLI is available and generate client
+echo "Step 5: Ensuring Prisma CLI is available..."
 
 # Check Node.js version first
 NODE_VERSION=$(node --version)
 echo "Current Node.js version: $NODE_VERSION"
+
+# Ensure Prisma CLI is installed locally
+echo "Installing Prisma CLI locally..."
+npm install --no-package-lock prisma@^4.16.2
+
+# Add node_modules/.bin to PATH for this session
+export PATH="$PWD/node_modules/.bin:$PATH"
+
+# Verify Prisma CLI is available
+if command -v prisma >/dev/null 2>&1; then
+    echo "✓ Prisma CLI is available"
+else
+    echo "⚠ Prisma CLI not found in PATH, using npx..."
+fi
 
 # Try multiple approaches for Prisma generation
 echo "Attempting Prisma client generation..."
@@ -67,7 +77,7 @@ else
     # Method 2: Reinstall Prisma packages specifically
     echo "Reinstalling Prisma packages..."
     npm uninstall @prisma/client prisma
-    npm install --no-package-lock @prisma/client@^5.0.0 prisma@^5.0.0
+    npm install --no-package-lock @prisma/client@^4.16.2 prisma@^4.16.2
     
     # Method 3: Try generation again
     if npx prisma generate; then
