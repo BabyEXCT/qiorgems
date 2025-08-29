@@ -91,8 +91,28 @@ else
     fi
 fi
 
-# Step 6: Build the application
-echo "Step 6: Building application..."
+# Step 6: Ensure Next.js CLI is available
+echo "Step 6: Ensuring Next.js CLI is available..."
+
+# Install Next.js locally if not present
+if ! command -v next &> /dev/null && ! [ -f "node_modules/.bin/next" ]; then
+    echo "Installing Next.js CLI locally..."
+    npm install --no-package-lock next@^13.5.0
+fi
+
+# Export node_modules/.bin to PATH for Next.js CLI
+export PATH="$PWD/node_modules/.bin:$PATH"
+echo "✓ Next.js CLI path exported"
+
+# Verify Next.js CLI is available
+if command -v next &> /dev/null || [ -f "node_modules/.bin/next" ]; then
+    echo "✓ Next.js CLI is available"
+else
+    echo "⚠️ Next.js CLI not found, but proceeding with build..."
+fi
+
+# Step 7: Build the application
+echo "Step 7: Building application..."
 npm run build
 
 if [ $? -eq 0 ]; then
