@@ -26,9 +26,32 @@ else
     echo "⚠ Warning: package-cpanel.json not found, using original package.json"
 fi
 
-# Step 4: Install dependencies with cPanel-optimized package.json (no postinstall)
-echo "Step 4: Installing dependencies..."
-if [ -f "package-cpanel-ultra-low-memory.json" ]; then
+# Step 4: Check Node.js version and install dependencies
+echo "Step 4: Checking Node.js version and installing dependencies..."
+
+# Check Node.js version for WebAssembly compatibility
+NODE_VERSION=$(node --version)
+echo "Current Node.js version: $NODE_VERSION"
+
+if [[ "$NODE_VERSION" == *"v20."* ]]; then
+    echo "⚠️  WARNING: Node.js v20.x has known WebAssembly memory issues!"
+    echo "🚨 CRITICAL: Use emergency-cpanel-fix.sh for v20.x issues"
+    echo "Recommended: Downgrade to Node.js v18.x or v16.x in cPanel"
+    echo ""
+    echo "Continuing with emergency fallback configuration..."
+    
+    if [ -f "package-cpanel-emergency.json" ]; then
+        echo "Using emergency package configuration (Prisma v1.x)..."
+        cp package-cpanel-emergency.json package.json
+        NODE_OPTIONS="--max-old-space-size=512 --max-semi-space-size=32" npm install --no-package-lock --legacy-peer-deps --production
+    else
+        echo "Emergency package not found - using ultra-low-memory fallback"
+        if [ -f "package-cpanel-ultra-low-memory.json" ]; then
+            cp package-cpanel-ultra-low-memory.json package.json
+        fi
+        NODE_OPTIONS="--max-old-space-size=512" npm install --no-package-lock --legacy-peer-deps --production
+    fi
+elif [ -f "package-cpanel-ultra-low-memory.json" ]; then
     echo "Using package-cpanel-ultra-low-memory.json for ultra-low-memory environment (Prisma v2)..."
     cp package-cpanel-ultra-low-memory.json package.json
     npm install --no-package-lock --legacy-peer-deps
@@ -234,6 +257,10 @@ if [ $? -eq 0 ]; then
     echo "   chmod +x start-cpanel-app.sh && ./start-cpanel-app.sh"
     echo ""
     echo "4. Check troubleshooting guide: CPANEL-503-TROUBLESHOOTING.md"
+    echo ""
+    echo "🚨 FOR CRITICAL WebAssembly MEMORY ERRORS:"
+    echo "   If you see 'WebAssembly.Instance(): Out of memory' errors:"
+    echo "   chmod +x emergency-cpanel-fix.sh && ./emergency-cpanel-fix.sh"
     echo ""
     echo "Next steps:"
     echo "1. Restart your Node.js application in cPanel NodeJS Selector"
