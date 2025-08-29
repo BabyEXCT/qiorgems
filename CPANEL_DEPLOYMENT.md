@@ -121,12 +121,35 @@ npm run build
 
 ### Common Issues
 
-**1. "node_modules" folder conflict**
+**1. "Cannot find module 'next'" Error (CRITICAL FIX)**
+This error occurs when Node.js dependencies aren't properly installed on the cPanel server.
+
+**SOLUTION: Use the automated deployment fix script**
+
+**On your local machine (Windows):**
+```powershell
+# Run the local preparation script
+.\fix-cpanel-deployment.ps1
+```
+
+**On cPanel server (via NodeJS Selector terminal):**
+```bash
+# Upload the fix script and run it
+bash fix-cpanel-deployment.sh
+```
+
+This will:
+- Clean up any conflicting installations
+- Use the cPanel-optimized package.json
+- Install dependencies with proper flags
+- Build the application correctly
+
+**2. "node_modules" folder conflict**
 - Ensure no `node_modules` folder exists in your app root
 - Use NodeJS Selector to manage dependencies
 - If error persists, delete any hidden node_modules and restart
 
-**2. NPM Install Failures in CloudLinux NodeJS Selector**
+**3. NPM Install Failures in CloudLinux NodeJS Selector**
 - **Solution A**: Use the automated fix script (RECOMMENDED)
   ```bash
   # Run the comprehensive fix script
