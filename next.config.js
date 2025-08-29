@@ -5,9 +5,7 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false
-  }
+  // Removed deprecated experimental options
 }
 
 module.exports = nextConfig
