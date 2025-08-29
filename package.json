@@ -48,10 +48,5 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.0.0"
-  },
-  "overrides": {
-    "@aws-sdk/client-sesv2": "3.100.0",
-    "@aws-sdk/core": "3.100.0",
-    "@aws-sdk/types": "3.100.0"
   }
 }
