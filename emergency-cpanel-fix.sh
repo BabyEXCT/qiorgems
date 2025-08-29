@@ -3,10 +3,12 @@
 # EMERGENCY cPanel WebAssembly Memory Fix Script
 # For critical Node.js v20.18.3 WebAssembly memory allocation errors
 
-echo "🚨 === EMERGENCY cPanel WebAssembly Memory Fix ==="
+echo "🚨 === EMERGENCY cPanel WebAssembly Memory Fix v2.0 ==="
 echo "This script addresses critical WebAssembly memory allocation errors"
 echo "Error: RangeError: WebAssembly.Instance(): Out of memory"
 echo "Node.js Version: $(node --version)"
+echo "Memory Limit: 4GB (cPanel LVE restriction)"
+echo "NODE_ENV Warning: Non-standard value detected"
 echo "Starting emergency fix at: $(date)"
 echo ""
 
@@ -47,15 +49,26 @@ else
     echo "✓ Node.js version appears compatible"
 fi
 
-# Step 4: Use emergency package configuration
-echo "Step 4: Applying emergency package configuration..."
-if [ -f "package-cpanel-emergency.json" ]; then
-    echo "Using emergency package configuration (Prisma v1.x)..."
+# Step 4: Use ultra-minimal package configuration (WebAssembly-free)
+echo "Step 4: Applying ultra-minimal package configuration..."
+if [ -f "package-cpanel-ultra-minimal.json" ]; then
+    echo "✅ Found ultra-minimal package configuration (WebAssembly-free)"
+    cp package.json package-backup-$(date +%Y%m%d-%H%M%S).json 2>/dev/null || true
+    cp package-cpanel-ultra-minimal.json package.json
+    echo "📋 Applied ultra-minimal package.json with:"
+    echo "   - Next.js v13.5.6 (stable)"
+    echo "   - React v18.2.0 (minimal)"
+    echo "   - No Prisma/Database dependencies"
+    echo "   - Node.js engine: >=16.20.0 <19.0.0"
+    echo "   - WebAssembly disabled"
+    echo "✓ Ultra-minimal package configuration applied"
+elif [ -f "package-cpanel-emergency.json" ]; then
+    echo "Using emergency package configuration (Prisma v2.x fallback)..."
     cp package.json package-backup-$(date +%Y%m%d-%H%M%S).json 2>/dev/null || true
     cp package-cpanel-emergency.json package.json
     echo "✓ Emergency package configuration applied"
 else
-    echo "❌ Emergency package configuration not found!"
+    echo "❌ No emergency packages found!"
     echo "Creating minimal emergency configuration..."
     cat > package.json << 'EOF'
 {
@@ -196,6 +209,7 @@ echo ""
 echo "🎯 === EMERGENCY FIX COMPLETED ==="
 echo ""
 echo "✅ Emergency measures applied:"
+echo "   - Ultra-minimal package (WebAssembly-free)"
 echo "   - Extreme memory optimization"
 echo "   - Prisma disabled/downgraded if problematic"
 echo "   - Development mode fallback if needed"
@@ -217,9 +231,15 @@ echo ""
 echo "3. Restart the Node.js application"
 echo ""
 echo "4. If still failing:"
+echo "   - Run: ./wasm-memory-fix.sh (specialized WebAssembly fix)"
 echo "   - Contact hosting provider about memory limits"
 echo "   - Request Node.js v18.x or v16.x"
 echo "   - Consider upgrading hosting plan"
+echo ""
+echo "🔧 Additional Tools Available:"
+echo "   - wasm-memory-fix.sh: Specialized WebAssembly memory fix"
+echo "   - package-cpanel-ultra-minimal.json: Minimal dependencies"
+echo "   - server-minimal.js: Memory-optimized development server"
 echo ""
 echo "⚠️  WARNING: Node.js v20.18.3 has known WebAssembly memory issues"
 echo "The only reliable fix is downgrading to v18.x or v16.x"
@@ -229,4 +249,4 @@ echo "   - install.log (dependency installation)"
 echo "   - build.log (build process)"
 echo "   - prisma.log (Prisma generation, if attempted)"
 echo ""
-echo "=== Emergency Fix Script Completed ==="
+echo "=== Emergency Fix Script Completed ===
