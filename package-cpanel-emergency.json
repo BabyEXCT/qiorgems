@@ -39,13 +39,5 @@
   },
   "prisma": {
     "seed": "node seed.js"
-  },
-  "overrides": {
-    "@prisma/engines": "2.30.3",
-    "@prisma/prisma-fmt-wasm": "2.30.3"
-  },
-  "resolutions": {
-    "@prisma/engines": "2.30.3",
-    "@prisma/prisma-fmt-wasm": "2.30.3"
   }
 }
