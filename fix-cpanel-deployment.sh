@@ -45,9 +45,41 @@ if [ $? -ne 0 ]; then
     npm install --no-package-lock --legacy-peer-deps
 fi
 
-# Step 5: Generate Prisma client
+# Step 5: Generate Prisma client with error handling
 echo "Step 5: Generating Prisma client..."
-npx prisma generate
+
+# Check Node.js version first
+NODE_VERSION=$(node --version)
+echo "Current Node.js version: $NODE_VERSION"
+
+# Try multiple approaches for Prisma generation
+echo "Attempting Prisma client generation..."
+if npx prisma generate; then
+    echo "✓ Prisma client generated successfully"
+else
+    echo "⚠ Prisma generation failed, trying alternative methods..."
+    
+    # Method 1: Clear Prisma cache and try again
+    echo "Clearing Prisma cache..."
+    rm -rf node_modules/.prisma
+    rm -rf node_modules/@prisma
+    
+    # Method 2: Reinstall Prisma packages specifically
+    echo "Reinstalling Prisma packages..."
+    npm uninstall @prisma/client prisma
+    npm install --no-package-lock @prisma/client@^5.0.0 prisma@^5.0.0
+    
+    # Method 3: Try generation again
+    if npx prisma generate; then
+        echo "✓ Prisma client generated successfully after reinstall"
+    else
+        echo "❌ Prisma generation still failing. Manual intervention required."
+        echo "Please check:"
+        echo "1. Node.js version compatibility (recommended: 16.x or 18.x)"
+        echo "2. Database connection in .env file"
+        echo "3. Prisma schema syntax in prisma/schema.prisma"
+    fi
+fi
 
 # Step 6: Build the application
 echo "Step 6: Building application..."
