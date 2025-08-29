@@ -32,6 +32,10 @@ if [ -f "package-cpanel-no-postinstall.json" ]; then
     echo "Using cPanel-optimized package.json without postinstall script..."
     cp package-cpanel-no-postinstall.json package.json
     npm install --no-package-lock --legacy-peer-deps
+elif [ -f "package-cpanel-low-memory.json" ]; then
+    echo "Using package-cpanel-low-memory.json for low-memory environments..."
+    cp package-cpanel-low-memory.json package.json
+    npm install --no-package-lock --legacy-peer-deps
 elif [ -f "package-cpanel.json" ]; then
     echo "Using cPanel-optimized package.json..."
     cp package-cpanel.json package.json
@@ -62,32 +66,47 @@ else
     echo "⚠ Prisma CLI not found in PATH, using npx..."
 fi
 
-# Try multiple approaches for Prisma generation
-echo "Attempting Prisma client generation..."
-if npx prisma generate; then
-    echo "✓ Prisma client generated successfully"
+# Try multiple approaches for Prisma generation with memory optimization
+echo "Attempting Prisma client generation with memory optimization..."
+
+# Method 1: Try with increased Node.js memory limit
+echo "Trying with increased memory limit..."
+if NODE_OPTIONS="--max-old-space-size=4096" npx prisma generate; then
+    echo "✓ Prisma client generated successfully with memory optimization"
 else
-    echo "⚠ Prisma generation failed, trying alternative methods..."
+    echo "⚠ Memory-optimized generation failed, trying alternative methods..."
     
-    # Method 1: Clear Prisma cache and try again
+    # Method 2: Clear Prisma cache and try again
     echo "Clearing Prisma cache..."
     rm -rf node_modules/.prisma
     rm -rf node_modules/@prisma
     
-    # Method 2: Reinstall Prisma packages specifically
-    echo "Reinstalling Prisma packages..."
-    npm uninstall @prisma/client prisma
-    npm install --no-package-lock @prisma/client@^4.16.2 prisma@^4.16.2
-    
-    # Method 3: Try generation again
-    if npx prisma generate; then
-        echo "✓ Prisma client generated successfully after reinstall"
+    # Method 3: Try with even higher memory limit
+    echo "Trying with higher memory limit (8GB)..."
+    if NODE_OPTIONS="--max-old-space-size=8192" npx prisma generate; then
+        echo "✓ Prisma client generated with high memory limit"
     else
-        echo "❌ Prisma generation still failing. Manual intervention required."
-        echo "Please check:"
-        echo "1. Node.js version compatibility (recommended: 16.x or 18.x)"
-        echo "2. Database connection in .env file"
-        echo "3. Prisma schema syntax in prisma/schema.prisma"
+        echo "⚠ High memory generation failed, reinstalling Prisma..."
+        
+        # Method 4: Reinstall Prisma packages with lower memory version
+         echo "Reinstalling Prisma packages with lower memory requirements..."
+         npm uninstall @prisma/client prisma
+         npm install --no-package-lock @prisma/client@^3.15.2 prisma@^3.15.2
+        
+        # Method 5: Try generation with memory optimization after reinstall
+        echo "Trying generation with memory optimization after reinstall..."
+        if NODE_OPTIONS="--max-old-space-size=4096 --max-semi-space-size=512" npx prisma generate; then
+            echo "✓ Prisma client generated successfully after reinstall with memory optimization"
+        else
+            echo "❌ Prisma generation still failing. WebAssembly memory error detected."
+            echo "Possible solutions:"
+            echo "1. Contact hosting provider to increase memory limits"
+            echo "2. Use Node.js 16.x instead of 20.x (better WASM compatibility)"
+            echo "3. Consider using Prisma v3.x for lower memory usage"
+            echo "4. Check server memory availability: free -h"
+            echo "5. Database connection in .env file"
+            echo "6. Prisma schema syntax in prisma/schema.prisma"
+        fi
     fi
 fi
 
