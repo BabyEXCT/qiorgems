@@ -180,18 +180,76 @@ npm run build
 
 if [ $? -eq 0 ]; then
     echo "✅ Deployment fix completed successfully!"
+    
+    # Step 10: Configure application startup for cPanel
+    echo "Step 10: Configuring application startup..."
+    
+    # Stop any existing Node.js processes
+    echo "Stopping existing Node.js processes..."
+    pkill -f "node.*next" 2>/dev/null || true
+    pkill -f "npm.*start" 2>/dev/null || true
+    sleep 2
+    
+    # Test application startup
+    echo "Testing application startup..."
+    
+    # Check if cpanel-app-config.js exists
+    if [ -f "cpanel-app-config.js" ]; then
+        echo "✓ Found cpanel-app-config.js startup file"
+        
+        # Test startup with memory optimization
+        echo "Testing application with memory optimization..."
+        timeout 10 NODE_OPTIONS="--max-old-space-size=2048" node cpanel-app-config.js &
+        STARTUP_PID=$!
+        
+        sleep 5
+        
+        if kill -0 $STARTUP_PID 2>/dev/null; then
+            echo "✅ Application startup test successful!"
+            kill $STARTUP_PID 2>/dev/null || true
+        else
+            echo "⚠ Application startup test failed, but continuing..."
+        fi
+    else
+        echo "⚠ cpanel-app-config.js not found - using default startup"
+    fi
+    
+    # Set proper file permissions
+    echo "Setting file permissions..."
+    chmod 644 *.js 2>/dev/null || true
+    chmod 644 *.json 2>/dev/null || true
+    chmod +x *.sh 2>/dev/null || true
+    
+    echo ""
+    echo "🎯 IMPORTANT: To fix 503 Service Unavailable error:"
+    echo ""
+    echo "1. In cPanel Node.js Selector, set:"
+    echo "   - Startup File: cpanel-app-config.js"
+    echo "   - Application Mode: Production"
+    echo "   - Node.js Version: 16.x or 18.x (avoid 20.18.3)"
+    echo ""
+    echo "2. Click 'Restart' in cPanel Node.js Selector"
+    echo ""
+    echo "3. If still getting 503 errors, run:"
+    echo "   chmod +x start-cpanel-app.sh && ./start-cpanel-app.sh"
+    echo ""
+    echo "4. Check troubleshooting guide: CPANEL-503-TROUBLESHOOTING.md"
     echo ""
     echo "Next steps:"
     echo "1. Restart your Node.js application in cPanel NodeJS Selector"
-    echo "2. Check the application logs for any remaining errors"
-    echo "3. Test your application URL"
+    echo "2. Set startup file to 'cpanel-app-config.js'"
+    echo "3. Check the application logs for any remaining errors"
+    echo "4. Test your application URL"
+    echo "5. If 503 error persists, follow the troubleshooting guide"
 else
     echo "❌ Build failed. Please check the error messages above."
     echo "You may need to:"
     echo "1. Check Node.js version compatibility (use 16.x or 18.x)"
     echo "2. Verify database configuration"
     echo "3. Contact your hosting provider for support"
+    echo "4. Try using package-cpanel-ultra-low-memory.json for memory issues"
 fi
 
 echo ""
 echo "=== Fix Script Completed ==="
+echo "📋 For 503 Service Unavailable errors, see: CPANEL-503-TROUBLESHOOTING.md"
