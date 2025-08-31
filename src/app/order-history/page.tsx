@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Package, Truck, CheckCircle, Clock, X, Eye, ArrowLeft } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { formatPrice } from '@/utils/currency'
 import { showError, showLoading, closeLoading } from '@/utils/alerts'
 
@@ -134,21 +132,18 @@ export default function OrderHistoryPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your orders...</p>
           </div>
         </div>
-        <Footer />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
@@ -340,8 +335,6 @@ export default function OrderHistoryPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   )
 }

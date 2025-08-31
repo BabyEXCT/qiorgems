@@ -16,8 +16,6 @@ import {
   Calendar,
   Truck
 } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 
 interface Order {
   id: string
@@ -205,7 +203,6 @@ export default function CustomerAccount() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Account Header */}
@@ -553,8 +550,6 @@ export default function CustomerAccount() {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   )
 }

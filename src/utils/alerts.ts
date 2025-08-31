@@ -1,8 +1,23 @@
-import Swal from 'sweetalert2';
+// Client-side only SweetAlert2 getter with dynamic import
+const getSwal = async () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  try {
+    const { default: Swal } = await import('sweetalert2');
+    return Swal;
+  } catch (error) {
+    console.warn('SweetAlert2 could not be loaded:', error);
+    return null;
+  }
+};
 
 // Success alert
-export const showSuccess = (title: string, text?: string) => {
-  return Swal.fire({
+export const showSuccess = async (title: string, text?: string) => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon: 'success',
     title,
     text,
@@ -14,8 +29,11 @@ export const showSuccess = (title: string, text?: string) => {
 };
 
 // Error alert
-export const showError = (title: string, text?: string) => {
-  return Swal.fire({
+export const showError = async (title: string, text?: string) => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon: 'error',
     title,
     text,
@@ -25,8 +43,11 @@ export const showError = (title: string, text?: string) => {
 };
 
 // Warning alert
-export const showWarning = (title: string, text?: string) => {
-  return Swal.fire({
+export const showWarning = async (title: string, text?: string) => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon: 'warning',
     title,
     text,
@@ -36,8 +57,11 @@ export const showWarning = (title: string, text?: string) => {
 };
 
 // Info alert
-export const showInfo = (title: string, text?: string) => {
-  return Swal.fire({
+export const showInfo = async (title: string, text?: string) => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon: 'info',
     title,
     text,
@@ -47,8 +71,11 @@ export const showInfo = (title: string, text?: string) => {
 };
 
 // Confirmation dialog
-export const showConfirm = (title: string, text?: string) => {
-  return Swal.fire({
+export const showConfirm = async (title: string, text?: string) => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon: 'question',
     title,
     text,
@@ -61,34 +88,46 @@ export const showConfirm = (title: string, text?: string) => {
 };
 
 // Loading alert
-export const showLoading = (title: string = 'Loading...') => {
-  return Swal.fire({
+export const showLoading = async (title: string = 'Loading...') => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     title,
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,
     didOpen: () => {
-      Swal.showLoading();
+      swal.showLoading();
     }
   });
 };
 
 // Close loading alert
-export const closeLoading = () => {
-  Swal.close();
+export const closeLoading = async () => {
+  const swal = await getSwal();
+  if (!swal) return;
+  
+  swal.close();
 };
 
 // Toast notification
-export const showToast = (title: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
-  const Toast = Swal.mixin({
+export const showToast = async (title: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  const Toast = swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
+      // Add null check to prevent addEventListener errors
+      if (toast && typeof toast.addEventListener === 'function') {
+        toast.addEventListener('mouseenter', swal.stopTimer);
+        toast.addEventListener('mouseleave', swal.resumeTimer);
+      }
     }
   });
 
@@ -99,8 +138,11 @@ export const showToast = (title: string, icon: 'success' | 'error' | 'warning' |
 };
 
 // Custom styled alert for the jewelry theme
-export const showJewelryAlert = (title: string, text?: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
-  return Swal.fire({
+export const showJewelryAlert = async (title: string, text?: string, icon: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+  const swal = await getSwal();
+  if (!swal) return { isConfirmed: false };
+  
+  return swal.fire({
     icon,
     title,
     text,

@@ -253,7 +253,7 @@ ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`
 
 -- Insert Default Data
 
--- Default Seller User (password: seller123, hashed with bcrypt)
+-- Default Seller User
 INSERT INTO `User` (`id`, `email`, `username`, `password`, `role`, `firstName`, `lastName`, `phone`, `address`, `city`, `state`, `zipCode`, `country`, `emailVerified`, `image`, `createdAt`, `updatedAt`) VALUES
 ('seller-default-001', 'seller@qiogems.com', 'qiogems_seller', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'SELLER', 'QioGems', 'Seller', '+1234567890', '123 Jewelry Street', 'Gem City', 'CA', '90210', 'USA', NOW(), NULL, NOW(), NOW());
 

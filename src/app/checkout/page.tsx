@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { CreditCard, Lock, Truck, MapPin, User, Mail, Phone, Shield, Sparkles } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { useCart } from '@/contexts/CartContext'
 import { formatPrice, calculateTotal } from '@/utils/currency'
 import { showError, showSuccess, showLoading, closeLoading, showConfirm } from '@/utils/alerts'
@@ -201,7 +199,6 @@ export default function CheckoutPage() {
   if (state.items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
           <p className="text-gray-600 mb-8">Add some items to your cart before checking out.</p>
@@ -212,14 +209,12 @@ export default function CheckoutPage() {
             Continue Shopping
           </button>
         </div>
-        <Footer />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
@@ -522,8 +517,6 @@ export default function CheckoutPage() {
           </div>
         </form>
       </div>
-
-      <Footer />
     </div>
   )
 }

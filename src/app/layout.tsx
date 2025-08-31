@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
 import { Playfair_Display, Inter } from "next/font/google"
+import Script from "next/script"
 import "./globals.css"
 import SessionProvider from "@/components/providers/SessionProvider"
 import { CartProvider } from '@/contexts/CartContext'
 import { WishlistProvider } from '@/contexts/WishlistContext'
 import ConditionalNavbar from '@/components/layout/ConditionalNavbar'
+import Footer from '@/components/layout/Footer'
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
@@ -30,6 +32,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+      </head>
       <body
         className={`${playfairDisplay.variable} ${inter.variable} font-inter bg-cream-50 text-charcoal-900 antialiased`}
         suppressHydrationWarning={true}
@@ -39,6 +43,7 @@ export default function RootLayout({
             <WishlistProvider>
               <ConditionalNavbar />
               {children}
+              <Footer />
             </WishlistProvider>
           </CartProvider>
         </SessionProvider>

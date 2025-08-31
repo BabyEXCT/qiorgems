@@ -79,8 +79,7 @@ const nextConfig = {
   // Optimize output
   output: 'standalone', // Standalone output for easier deployment
   
-  // Disable telemetry
-  telemetry: false,
+  // Note: telemetry is disabled via environment variable NEXT_TELEMETRY_DISABLED=1
   
   // Compress responses
   compress: true,

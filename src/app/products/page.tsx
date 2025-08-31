@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 // import Image from 'next/image' // Removed to use regular img tags for base64 images
 import { Search, Filter, Star, ShoppingBag, Heart, Grid, List, Sparkles } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { formatPrice } from '@/utils/currency'
 import { useCart } from '@/contexts/CartContext'
 import { useWishlist } from '@/contexts/WishlistContext'
@@ -158,7 +156,6 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
       
       {/* Page Header */}
       <section className="bg-gradient-to-br from-cream-50 to-gold-50 py-16">
@@ -361,8 +358,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   )
 }

@@ -21,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
     }
 
-    const product = await prisma.product.findUnique({
+    const product = await prisma.product.findFirst({
       where: {
         id: id,
         status: 'ACTIVE' // Only show active products to public

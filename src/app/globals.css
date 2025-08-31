@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* SweetAlert2 Custom Styles for Jewelry Theme */
 .jewelry-alert {
@@ -29,49 +31,46 @@
   font-weight: 500 !important;
 }
 
-@theme {
-  --color-gold-50: #fffdf7;
-  --color-gold-100: #fffaeb;
-  --color-gold-200: #fef3c7;
-  --color-gold-300: #fde68a;
-  --color-gold-400: #fcd34d;
+/* Custom CSS variables for compatibility */
+:root {
+  --font-family-playfair: 'Playfair Display', serif;
+  --font-family-inter: 'Inter', sans-serif;
+  
+  /* Gold color palette */
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
   --color-gold-500: #f59e0b;
   --color-gold-600: #d97706;
   --color-gold-700: #b45309;
   --color-gold-800: #92400e;
   --color-gold-900: #78350f;
   
-  --color-charcoal-50: #f8f9fa;
-  --color-charcoal-100: #e9ecef;
-  --color-charcoal-200: #dee2e6;
-  --color-charcoal-300: #ced4da;
-  --color-charcoal-400: #adb5bd;
-  --color-charcoal-500: #6c757d;
-  --color-charcoal-600: #495057;
-  --color-charcoal-700: #343a40;
-  --color-charcoal-800: #212529;
-  --color-charcoal-900: #1a1d20;
+  /* Charcoal color palette */
+  --color-charcoal-50: #f8fafc;
+  --color-charcoal-100: #f1f5f9;
+  --color-charcoal-200: #e2e8f0;
+  --color-charcoal-300: #cbd5e1;
+  --color-charcoal-400: #94a3b8;
+  --color-charcoal-500: #64748b;
+  --color-charcoal-600: #475569;
+  --color-charcoal-700: #334155;
+  --color-charcoal-800: #1e293b;
+  --color-charcoal-900: #0f172a;
   
-  --color-cream-50: #fefefe;
-  --color-cream-100: #fefcf8;
-  --color-cream-200: #fdf8f0;
-  --color-cream-300: #fcf4e8;
-  --color-cream-400: #faf0e0;
-  --color-cream-500: #f8ecd8;
-  --color-cream-600: #f6e8d0;
-  --color-cream-700: #f4e4c8;
-  --color-cream-800: #f2e0c0;
-  --color-cream-900: #f0dcb8;
-  
-  --font-family-playfair: 'Playfair Display', serif;
-  --font-family-inter: 'Inter', sans-serif;
-}
-
-body {
-  background-color: var(--color-cream-50);
-  color: var(--color-charcoal-900);
-  font-family: var(--font-family-inter);
-  font-feature-settings: 'rlig' 1, 'calt' 1;
+  /* Cream color palette */
+  --color-cream-50: #fefdfb;
+  --color-cream-100: #fdf9f0;
+  --color-cream-200: #faf2e1;
+  --color-cream-300: #f6e8c8;
+  --color-cream-400: #f0d9a7;
+  --color-cream-500: #e8c785;
+  --color-cream-600: #deb366;
+  --color-cream-700: #d19e47;
+  --color-cream-800: #b8852e;
+  --color-cream-900: #9a6f1a;
 }
 
 h1, h2, h3, h4, h5, h6 {

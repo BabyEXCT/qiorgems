@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { VoucherType, VoucherStatus } from '@prisma/client'
+// Voucher types (since we're using SQLite without enums)
+type VoucherType = 'PERCENTAGE' | 'FIXED_AMOUNT'
+type VoucherStatus = 'ACTIVE' | 'INACTIVE' | 'EXPIRED'
 
 // GET /api/dashboard/vouchers/[id] - Get a specific voucher
 export async function GET(
@@ -85,7 +87,8 @@ export async function PUT(
     }
 
     // Validate voucher type if provided
-    if (type && !Object.values(VoucherType).includes(type)) {
+    const validVoucherTypes = ['PERCENTAGE', 'FIXED_AMOUNT'];
+    if (type && !validVoucherTypes.includes(type)) {
       return NextResponse.json(
         { error: 'Invalid voucher type' },
         { status: 400 }
@@ -93,7 +96,8 @@ export async function PUT(
     }
 
     // Validate voucher status if provided
-    if (status && !Object.values(VoucherStatus).includes(status)) {
+    const validVoucherStatuses = ['ACTIVE', 'INACTIVE', 'EXPIRED'];
+    if (status && !validVoucherStatuses.includes(status)) {
       return NextResponse.json(
         { error: 'Invalid voucher status' },
         { status: 400 }

@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Award, Plus, Minus } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { useCart } from '@/contexts/CartContext'
 import { formatPrice } from '@/utils/currency'
 import { showError, showLoading, closeLoading, showSuccess } from '@/utils/alerts'
@@ -82,12 +80,10 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
-        <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading product...</p>
         </div>
-        <Footer />
       </div>
     )
   }
@@ -95,12 +91,10 @@ export default function ProductDetailPage() {
   if (error || !product) {
     return (
       <div className="min-h-screen bg-white">
-        <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
           <p className="text-gray-600">{error || "The product you're looking for doesn't exist."}</p>
         </div>
-        <Footer />
       </div>
     )
   }
@@ -121,7 +115,6 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
@@ -376,8 +369,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   )
 }

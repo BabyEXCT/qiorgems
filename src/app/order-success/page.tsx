@@ -3,8 +3,6 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle, Package, Truck, Mail, ArrowRight } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { showSuccess, showInfo, showToast } from '@/utils/alerts'
 
 function OrderContent() {
@@ -50,7 +48,6 @@ function OrderContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Success Header */}
@@ -229,8 +226,6 @@ function OrderContent() {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   )
 }

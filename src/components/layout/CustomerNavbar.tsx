@@ -29,7 +29,7 @@ export default function CustomerNavbar() {
   }
 
   return (
-    <header className="bg-white/95 backdrop-blur-md shadow-lg border-b border-charcoal-200 sticky top-0 z-50">
+    <header className="bg-white shadow-sm border-b border-charcoal-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -39,8 +39,8 @@ export default function CustomerNavbar() {
                 <span className="text-white font-bold text-sm">Q</span>
               </div>
               <span className="text-2xl font-playfair font-bold text-gradient hover:scale-105 transition-transform duration-200">
-                QiorGems
-              </span>
+          QioGems
+        </span>
             </Link>
           </div>
 
@@ -55,8 +55,6 @@ export default function CustomerNavbar() {
             <Link href="/about" className="text-charcoal-700 hover:text-charcoal-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
               About
             </Link>
-            
-
           </nav>
 
           {/* Search Bar */}
@@ -171,7 +169,7 @@ export default function CustomerNavbar() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-charcoal-200 py-4">
+          <div className="lg:hidden bg-white border-t border-charcoal-200 py-4">
             <div className="flex flex-col space-y-1">
               {/* Mobile Search */}
               <div className="px-4 pb-4">

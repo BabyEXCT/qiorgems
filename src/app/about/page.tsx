@@ -1,13 +1,10 @@
 'use client'
 
 import { Award, Users, Gem, Heart, Shield, Star } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Header />
       
       {/* Hero Section */}
       <section className="relative py-24 overflow-hidden" style={{background: 'linear-gradient(to bottom right, var(--color-cream-50), var(--color-gold-100), var(--color-cream-100))'}}>
@@ -249,8 +246,8 @@ export default function AboutPage() {
               href="/products"
               className="inline-flex items-center justify-center px-8 py-3 text-white font-semibold rounded-full transition-colors"
               style={{backgroundColor: 'var(--color-gold-600)'}} 
-              onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--color-gold-700)'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--color-gold-600)'}
+              onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = 'var(--color-gold-700)'}
+              onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'var(--color-gold-600)'}
             >
               Browse Collection
             </a>
@@ -259,12 +256,12 @@ export default function AboutPage() {
               className="inline-flex items-center justify-center px-8 py-3 border-2 font-semibold rounded-full transition-colors"
               style={{borderColor: 'var(--color-gold-600)', color: 'var(--color-gold-600)'}}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = 'var(--color-gold-600)';
-                e.target.style.color = 'white';
+                (e.target as HTMLElement).style.backgroundColor = 'var(--color-gold-600)';
+                (e.target as HTMLElement).style.color = 'white';
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'transparent';
-                e.target.style.color = 'var(--color-gold-600)';
+                (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                (e.target as HTMLElement).style.color = 'var(--color-gold-600)';
               }}
             >
               Contact Us
@@ -272,8 +269,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 }

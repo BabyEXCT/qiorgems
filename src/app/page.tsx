@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 import { Star, Heart, ShoppingCart, ArrowRight, Sparkles, Crown, Shield, Truck, Award } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import { formatPrice } from '@/utils/currency'
 import { useEffect, useState } from 'react'
 import { showSuccess, showError, showToast } from '@/utils/alerts'
@@ -83,7 +81,6 @@ export default function Home() {
   }
   return (
     <div className="min-h-screen" style={{backgroundColor: 'white'}}>
-      <Header />
       
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden" style={{background: 'linear-gradient(to bottom right, var(--color-cream-50), var(--color-gold-100), var(--color-cream-100))'}}>
@@ -370,8 +367,6 @@ export default function Home() {
           </form>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 }

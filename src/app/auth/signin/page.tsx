@@ -147,13 +147,7 @@ export default function SignIn() {
 
           </div>
 
-          <div className="text-center">
-            <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
-              <p className="font-medium mb-1">Demo Credentials:</p>
-              <p>Seller: username: <span className="font-mono">seller</span>, password: <span className="font-mono">seller123</span></p>
-              <p>Customer: Any other username/password combination</p>
-            </div>
-          </div>
+
         </form>
       </div>
     </div>
