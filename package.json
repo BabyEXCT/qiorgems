@@ -9,10 +9,12 @@
     "build:emergency": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=256 next build",
     "build:cpanel-ultra": "node build-cpanel-ultra.js",
     "dev:safe": "cross-env NODE_ENV=development NODE_OPTIONS=--max-old-space-size=256 --max-semi-space-size=16 UV_THREADPOOL_SIZE=2 next dev",
-    "postinstall": "prisma generate"
+    "postinstall": "echo 'Skipping prisma generate due to memory constraints'",
+    "prisma:install": "npm install @prisma/client@^4.16.0 prisma@^4.16.0 --no-save",
+    "prisma:generate": "NODE_OPTIONS='--max-old-space-size=1024 --max-semi-space-size=64' npx prisma generate",
+    "setup:database": "npm run prisma:install && npm run prisma:generate"
   },
   "dependencies": {
-    "@prisma/client": "^4.16.0",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "2.4.3",
@@ -38,7 +40,7 @@
     "crypto-browserify": "^3.12.1",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
-    "prisma": "^4.16.0",
+
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "typescript": "5.1.6"
