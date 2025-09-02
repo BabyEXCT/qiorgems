@@ -22,8 +22,8 @@ const nextConfig = {
     cpus: 1, // Use only 1 CPU core
   },
   
-  // Disable SWC minification
-  swcMinify: false,
+  // Enable SWC minification in production
+  swcMinify: true,
 
   // Ultra-minimal webpack configuration
   webpack: (config, { isServer, dev }) => {
@@ -34,7 +34,7 @@ const nextConfig = {
     config.optimization = {
       ...config.optimization,
       splitChunks: false, // Disable chunk splitting
-      minimize: false, // Disable minification to save memory
+      minimize: !dev, // Enable minification in production
       concatenateModules: false, // Disable module concatenation
       usedExports: false, // Disable tree shaking
       sideEffects: false,

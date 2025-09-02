@@ -102,7 +102,7 @@ const nextConfig = {
   compress: false,
   
   // Disable telemetry
-  telemetry: false,
+  // Telemetry disabled via environment variable
 };
 
 module.exports = nextConfig;

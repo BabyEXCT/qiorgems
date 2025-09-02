@@ -187,8 +187,7 @@ const nextConfig = {
   // Optimize output
   output: 'standalone',
   
-  // Disable telemetry
-  telemetry: false,
+  // Telemetry disabled via environment variable
 }
 
 module.exports = nextConfig
