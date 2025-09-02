@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NODE_ENV=development&& set NODE_OPTIONS=--max-old-space-size=512 --max-semi-space-size=32&& next dev",
+    "dev": "cross-env NODE_ENV=development NODE_OPTIONS=--max-old-space-size=512 --max-semi-space-size=32 next dev",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=512 next build",
     "start": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=512 next start",
-    "build:emergency": "set NODE_ENV=production&& set NODE_OPTIONS=--max-old-space-size=256&& next build",
+    "build:emergency": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=256 next build",
     "build:cpanel-ultra": "node build-cpanel-ultra.js",
-    "dev:safe": "set NODE_ENV=development&& set NODE_OPTIONS=--max-old-space-size=256 --max-semi-space-size=16&& set UV_THREADPOOL_SIZE=2&& next dev",
+    "dev:safe": "cross-env NODE_ENV=development NODE_OPTIONS=--max-old-space-size=256 --max-semi-space-size=16 UV_THREADPOOL_SIZE=2 next dev",
     "postinstall": "prisma generate"
   },
   "dependencies": {
